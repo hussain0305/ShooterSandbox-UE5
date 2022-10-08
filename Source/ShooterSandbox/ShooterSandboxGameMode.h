@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickups")
 	float pickupInterval = 5;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickups")
+	int numConstructOptionsPerCategory = 8;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Constructs Database")
 	class UDataTable* constructsDataTable;
 
