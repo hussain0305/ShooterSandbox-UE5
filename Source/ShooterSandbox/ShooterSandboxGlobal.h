@@ -9,13 +9,15 @@
 
 UENUM(BlueprintType)
 enum class EConstructType : uint8{ 
-	OffensiveConstruct	UMETA(DisplayName = "Offensive Construct"),
-	DefensiveConstruct	UMETA(DisplayName = "Defensive Construct"),
-	UtilityConstruct	UMETA(DisplayName = "Utility Construct"),
-	EnergyWeapon		UMETA(DisplayName = "Energy Weapon"),
-	HandledWeapon		UMETA(DisplayName = "Handled Weapon"),
-	Environmental		UMETA(DisplayName = "Environmental"),
-	WallConstruct		UMETA(DisplayName = "Wall Construct")
+	OffensiveConstruct			UMETA(DisplayName = "Offensive Construct"),
+	DefensiveConstruct			UMETA(DisplayName = "Defensive Construct"),
+	UtilityConstruct			UMETA(DisplayName = "Utility Construct"),
+	EnergyWeapon				UMETA(DisplayName = "Energy Weapon"),
+	HandledWeapon				UMETA(DisplayName = "Handled Weapon"),
+	Environmental				UMETA(DisplayName = "Environmental"),
+	WallOffensiveConstruct		UMETA(DisplayName = "Wall Offensive Construct"),
+	WallDefensiveConstruct		UMETA(DisplayName = "Wall Defensive Construct"),
+	WallUtilityConstruct		UMETA(DisplayName = "Wall Utility Construct")
 };
 
 UENUM(BlueprintType)
