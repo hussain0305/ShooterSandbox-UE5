@@ -254,23 +254,23 @@ bool AShooterSandboxGameMode::GetSpawnLocationAndRotation(FVector &spawnLocation
 void AShooterSandboxGameMode::PlaceNewConstructRequest(AShooterSandboxCharacter * spawnerPlayer, AShooterSandboxController * playerController, FName constructRowName, int playerEnergyBalance)
 {
 	FConstructsDatabase* databaseRow;
-	GetConstructDetails(constructRowName, databaseRow);
-
-	FVector spawnLocation;
-	FRotator spawnRotation;
-	AConstructibleSurface* surfaceToSpawnOn;
-
-	if (databaseRow->constructionCost > playerEnergyBalance)
+	if (GetConstructDetails(constructRowName, databaseRow))
 	{
-		spawnerPlayer->Client_PlayerOutOfEnergy();
-		return;
-	}
+		FVector spawnLocation;
+		FRotator spawnRotation;
+		AConstructibleSurface* surfaceToSpawnOn;
 
-	if (GetSpawnLocationAndRotation(spawnLocation, spawnRotation, surfaceToSpawnOn, databaseRow->constructBP.GetDefaultObject()->canBeParented, databaseRow->constructName, spawnerPlayer))
-	{
-		Server_SpawnConstruct(constructRowName, surfaceToSpawnOn, playerController, spawnLocation, spawnRotation);
-	}
+		if (databaseRow->constructionCost > playerEnergyBalance)
+		{
+			spawnerPlayer->Client_PlayerOutOfEnergy();
+			return;
+		}
 
+		if (GetSpawnLocationAndRotation(spawnLocation, spawnRotation, surfaceToSpawnOn, databaseRow->constructBP.GetDefaultObject()->canBeParented, databaseRow->constructName, spawnerPlayer))
+		{
+			Server_SpawnConstruct(constructRowName, surfaceToSpawnOn, playerController, spawnLocation, spawnRotation);
+		}
+	}
 }
 
 void AShooterSandboxGameMode::Server_SpawnConstruct(FName constructRowName, AConstructibleSurface* surfaceToSpawnOn, AShooterSandboxController* playerController, FVector spawnPosition, FRotator spawnRotation)
