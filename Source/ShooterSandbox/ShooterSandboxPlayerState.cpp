@@ -3,6 +3,7 @@
 #include "ShooterSandboxPlayerState.h"
 #include "ShooterSandboxController.h"
 #include "ShooterSandboxCharacter.h"
+#include "ShooterSandboxSaveGame.h"
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,6 +18,9 @@ void AShooterSandboxPlayerState::BeginPlay()
 	numConstructsBroken = 0;
 	kills = 0;
 	deaths = 0;
+
+	UShooterSandboxSaveGame* shooterSandboxSaveGame = Cast<UShooterSandboxSaveGame>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
+	playerGamerTag = shooterSandboxSaveGame->GetGamerTag();
 }
 
 int AShooterSandboxPlayerState::HealthChangedBy(int amount)
@@ -102,6 +106,11 @@ int AShooterSandboxPlayerState::GetEnergy()
 	return energy;
 }
 
+FString& AShooterSandboxPlayerState::GetGamerTag()
+{
+	return playerGamerTag;
+}
+
 bool AShooterSandboxPlayerState::SetMaxEnergy_Validate(int max)
 {
 	return true;
@@ -149,6 +158,8 @@ void AShooterSandboxPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 
 	DOREPLIFETIME_CONDITION(AShooterSandboxPlayerState, energy, COND_OwnerOnly);
 
+	//TODO: REPLICATE GAMER TAG JUST ONCE??????
+	DOREPLIFETIME(AShooterSandboxPlayerState, playerGamerTag);
 	DOREPLIFETIME(AShooterSandboxPlayerState, health);
 	DOREPLIFETIME(AShooterSandboxPlayerState, balance);
 	DOREPLIFETIME(AShooterSandboxPlayerState, playerScore);

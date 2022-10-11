@@ -31,37 +31,40 @@ public:
 protected:
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int playerScore;
+		FString playerGamerTag;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int currentMaxHealth;
+		int playerScore;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int health;
+		int currentMaxHealth;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int currentMaxBalance;
+		int health;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int balance;
+		int currentMaxBalance;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int currentMaxEnergy;
+		int balance;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+		int currentMaxEnergy;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EnergyChanged, BlueprintReadOnly)
-	int energy;
+		int energy;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int numConstructsConstructed;
+		int numConstructsConstructed;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int numConstructsBroken;
+		int numConstructsBroken;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int kills;
+		int kills;
 
 	UPROPERTY(Replicated, BlueprintReadOnly)
-	int deaths;
+		int deaths;
 
 	friend class AShooterSandboxCharacter;
 
@@ -73,54 +76,57 @@ public:
 **************************/
 
 	UFUNCTION(BlueprintCallable)
-	int HealthChangedBy(int amount);
+		int HealthChangedBy(int amount);
 
 	UFUNCTION(BlueprintCallable)
-	int BalanceChangedBy(int amount);
+		int BalanceChangedBy(int amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	void HasDied();
+		FString& GetGamerTag();
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetDeaths();
+		void HasDied();
+
+	UFUNCTION(BlueprintCallable, Category = "Round Stats")
+		int GetDeaths();
 	
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	void HasKilled();
+		void HasKilled();
 	
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetKills();
+		int GetKills();
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	void HasConstructed(int cost);
+		void HasConstructed(int cost);
 	
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetNumConstructsBuilt();
+		int GetNumConstructsBuilt();
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetScore();
+		int GetScore();
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	void HasBrokenConstruct(int healthOfConstruct);
+		void HasBrokenConstruct(int healthOfConstruct);
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetNumConstructsBroken();
+		int GetNumConstructsBroken();
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	void IncrementOrDecrementEnergyBy(int amount);
+		void IncrementOrDecrementEnergyBy(int amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetEnergy();
+		int GetEnergy();
 
 	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Round Stats")
-	void SetMaxEnergy(int max);
+		void SetMaxEnergy(int max);
 
 	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Round Stats")
-	void SetHealthAndBalance(int healthVal, int balanceVal);
+		void SetHealthAndBalance(int healthVal, int balanceVal);
 
 	UFUNCTION(BlueprintCallable, Category = "Round Stats")
-	int GetMaxEnergy();
+		int GetMaxEnergy();
 
 	UFUNCTION(BlueprintCallable, Category = "RepNotify")
-	void OnRep_EnergyChanged();
+		void OnRep_EnergyChanged();
 
 };
