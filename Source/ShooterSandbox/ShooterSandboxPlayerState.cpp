@@ -19,8 +19,11 @@ void AShooterSandboxPlayerState::BeginPlay()
 	kills = 0;
 	deaths = 0;
 
-	UShooterSandboxSaveGame* shooterSandboxSaveGame = Cast<UShooterSandboxSaveGame>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
-	playerGamerTag = shooterSandboxSaveGame->GetGamerTag();
+	//UShooterSandboxSaveGame* shooterSandboxSaveGame = Cast<UShooterSandboxSaveGame>(UGameplayStatics::LoadGameFromSlot("Slot1", 0));
+	//if (shooterSandboxSaveGame) 
+	//{
+	//	playerGamerTag = shooterSandboxSaveGame->GetGamerTag();
+	//}
 }
 
 int AShooterSandboxPlayerState::HealthChangedBy(int amount)

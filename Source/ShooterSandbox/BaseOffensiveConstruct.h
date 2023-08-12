@@ -38,9 +38,6 @@ public:
 //=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Recoil")
-	class USceneComponent* rootComp;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Recoil")
 	int shootRecoilFrames = 45;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Recoil")
@@ -84,12 +81,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* TurretCamera;
-
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* baseOrientation;
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* constructBase;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* rotatingConstructPart;

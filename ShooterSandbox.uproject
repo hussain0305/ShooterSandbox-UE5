@@ -43,6 +43,10 @@
 				"Mac",
 				"Linux"
 			]
+		},
+		{
+			"Name": "FieldSystemPlugin",
+			"Enabled": true
 		}
 	]
 }

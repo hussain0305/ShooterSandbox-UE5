@@ -20,13 +20,10 @@ void AEConstructDestruction::BeginPlay()
 
 void AEConstructDestruction::DestroyConstruct(UMaterialInstance* materialToApply, int lowMidHigh)
 {
-	//ConstructDestruction(materialToApply, lowMidHigh);
+	ConstructDestruction(materialToApply, lowMidHigh);
 
-	/*
 	FTimerHandle vfxCountdown;
 	GetWorld()->GetTimerManager().SetTimer(vfxCountdown, this, &AEConstructDestruction::DestroyVFX, 4.0f, false);
-	*/
-
 }
 
 void AEConstructDestruction::DestroyVFX()

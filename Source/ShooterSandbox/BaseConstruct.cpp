@@ -15,6 +15,15 @@
 ABaseConstruct::ABaseConstruct()
 {
 	SetReplicates(true);
+
+	rootComp = CreateDefaultSubobject<USceneComponent>(TEXT("ConstructRoot"));
+	SetRootComponent(rootComp);
+
+	baseOrientation = CreateDefaultSubobject<USceneComponent>(TEXT("BaseOrientation"));
+	baseOrientation->SetupAttachment(GetRootComponent());
+
+	constructBase = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Construct Base"));
+	constructBase->SetupAttachment(baseOrientation);
 }
 
 // Called when the game starts or when spawned
@@ -40,7 +49,7 @@ float ABaseConstruct::TakeDamage(float DamageAmount, FDamageEvent const & Damage
 	health -= DamageAmount;
 	Cast<AShooterSandboxController>(EventInstigator)->ProxyForHUD_ByCommandCode(EHUDCommandType::SuccessfulHit);
 
-	if (health < 0)
+	if (health < 0 && !destroyed)
 	{
 		Cast<AShooterSandboxPlayerState>(EventInstigator->PlayerState)->HasBrokenConstruct(maxHealth);
 		Cast<AShooterSandboxController>(EventInstigator)->ProxyForHUD_ByCommandCode(EHUDCommandType::PlayHitAnimation);
@@ -63,6 +72,7 @@ AShooterSandboxController* ABaseConstruct::GetConstructedBy()
 
 void ABaseConstruct::DestroyConstruct(int lowMidHigh)
 {
+	destroyed = true;
 	//!UPGRADE TODO
 	if (GetLocalRole() < ROLE_Authority)
 	{
@@ -74,25 +84,27 @@ void ABaseConstruct::DestroyConstruct(int lowMidHigh)
 		Multicast_DestroyConstruct(lowMidHigh);
 	}
 
+	//Probably resolved below. Ignore "!UPGRADE TODO"
 	//!UPGRADE TODO
-	Destroy();
+	//Destroy();
 }
 
 void ABaseConstruct::Multicast_DestroyConstruct_Implementation(int lowMidHigh)
 {
 	//BP_BlockifyConstruct();
-	
+	destroyed = true;
+
 	TArray<UStaticMeshComponent*> allStaticMeshes;
 	Cast<AActor>(this)->GetComponents<UStaticMeshComponent>(allStaticMeshes);
 
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	//AEConstructDestruction* spawnedDestruction = GetWorld()->SpawnActor<AEConstructDestruction>(
-	//	destructionBP, GetActorLocation() + allStaticMeshes[0]->GetRelativeLocation(), GetActorRotation(), spawnParams);
+	AEConstructDestruction* spawnedDestruction = GetWorld()->SpawnActor<AEConstructDestruction>(
+		destructionBP, GetActorLocation() + allStaticMeshes[0]->GetRelativeLocation(), GetActorRotation(), spawnParams);
 
-	//spawnedDestruction->DestroyConstruct(Cast<UMaterialInstance>(destructionMaterials[appearanceIndex]), lowMidHigh);
-	//Destroy();
+	spawnedDestruction->DestroyConstruct(Cast<UMaterialInstance>(destructionMaterials[appearanceIndex]), lowMidHigh);
+	Destroy();
 }
 
 void ABaseConstruct::RefreshAppearance()

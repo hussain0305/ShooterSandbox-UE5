@@ -24,15 +24,6 @@ ABaseOffensiveConstruct::ABaseOffensiveConstruct()
 	bUseControllerRotationYaw = false;//true
 	bUseControllerRotationRoll = false;
 
-	rootComp = CreateDefaultSubobject<USceneComponent>(TEXT("ConstructRoot"));
-	SetRootComponent(rootComp);
-
-	baseOrientation = CreateDefaultSubobject<USceneComponent>(TEXT("BaseOrientation"));
-	baseOrientation->SetupAttachment(GetRootComponent());
-
-	constructBase = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Construct Base"));
-	constructBase->SetupAttachment(baseOrientation);
-
 	rotatingConstructPart = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rotating Construct Part"));
 	rotatingConstructPart->SetMobility(EComponentMobility::Movable);
 	rotatingConstructPart->SetupAttachment(baseOrientation);

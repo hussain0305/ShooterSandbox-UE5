@@ -15,11 +15,16 @@ public:
 
 	ABaseConstruct();
 
+/**************************
+*       VARIABLES         *
+**************************/
+
 protected:
 
 //=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
 
 	int appearanceIndex;
+	bool destroyed = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int maxHealth;
@@ -33,6 +38,15 @@ protected:
 public:	
 
 //=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Recoil")
+	class USceneComponent* rootComp;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* baseOrientation;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* constructBase;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isGridAligned;
@@ -60,7 +74,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destruction")
 	TSubclassOf<class AEConstructDestruction> destructionBP;
-
 
 /**************************
 *       FUNCTIONS         *

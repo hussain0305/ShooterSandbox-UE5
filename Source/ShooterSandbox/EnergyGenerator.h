@@ -4,21 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "BaseConstruct.h"
-#include "Tower.generated.h"
+#include "EnergyGenerator.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SHOOTERSANDBOX_API ATower : public ABaseConstruct
+class SHOOTERSANDBOX_API AEnergyGenerator : public ABaseConstruct
 {
 	GENERATED_BODY()
-
-public:
-	
-	ATower();
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* towerBase;
 	
 };
