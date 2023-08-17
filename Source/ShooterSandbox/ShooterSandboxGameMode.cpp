@@ -35,7 +35,7 @@ void AShooterSandboxGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GetWorld()->GetTimerManager().SetTimer(energyPulse, this, &AShooterSandboxGameMode::Server_GiveEnergyToPlayers, PULSE_ENERGY_INTERVAL, true);
+	GetWorld()->GetTimerManager().SetTimer(energyPulse, this, &AShooterSandboxGameMode::Server_GiveEnergyToPlayers, 4.0f, true);
 	GetWorld()->GetTimerManager().SetTimer(weaponSpawnRoutine, this, &AShooterSandboxGameMode::SpawnNewPickup, pickupInterval, true);
 }
 
