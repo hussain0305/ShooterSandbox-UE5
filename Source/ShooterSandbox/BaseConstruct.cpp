@@ -1,3 +1,4 @@
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
@@ -103,7 +104,10 @@ void ABaseConstruct::Multicast_DestroyConstruct_Implementation(int lowMidHigh)
 	AEConstructDestruction* spawnedDestruction = GetWorld()->SpawnActor<AEConstructDestruction>(
 		destructionBP, GetActorLocation() + allStaticMeshes[0]->GetRelativeLocation(), GetActorRotation(), spawnParams);
 
-	spawnedDestruction->DestroyConstruct(Cast<UMaterialInstance>(destructionMaterials[appearanceIndex]), lowMidHigh);
+	if (spawnedDestruction != nullptr)
+	{
+		spawnedDestruction->DestroyConstruct(Cast<UMaterialInstance>(destructionMaterials[appearanceIndex]), lowMidHigh);
+	}
 	Destroy();
 }
 

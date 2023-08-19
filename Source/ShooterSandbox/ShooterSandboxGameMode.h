@@ -17,7 +17,8 @@ public:
 *       CONSTANTS         *
 **************************/
 	
-	const int PULSE_ENERGY_AMOUNT = 15;
+	const int PULSE_ENERGY_AMOUNT = 100;
+	const int ENERGY_PULSE_INTERVAL = 1;
 	const int MAX_ENERGY_AMOUNT = 500;
 	const float DEFAULT_PLAYER_BALANCE = 100;
 	const float DEFAULT_PLAYER_HEALTH = 25;
