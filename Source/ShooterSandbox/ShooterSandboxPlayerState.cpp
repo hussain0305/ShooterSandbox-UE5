@@ -77,7 +77,7 @@ int AShooterSandboxPlayerState::GetNumConstructsBuilt()
 	return numConstructsConstructed;
 }
 
-int AShooterSandboxPlayerState::GetScore()
+int AShooterSandboxPlayerState::FetchScore()
 {
 	return playerScore;
 }
