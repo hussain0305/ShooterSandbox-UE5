@@ -1,0 +1,10 @@
+
+OPTIMIAZATION-
+- Why are destruction materials different from appearance materials?
+
+IMPROVEMENTS-
+- make destroyed blocks explode naturally
+- Why isn't jump pad spawning
+- destruction collision
+- fade out destruction
+-Lean Tween
