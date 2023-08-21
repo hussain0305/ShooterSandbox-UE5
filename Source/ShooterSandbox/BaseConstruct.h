@@ -4,84 +4,91 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ShooterSandboxGlobal.h"
 #include "BaseConstruct.generated.h"
 
 UCLASS()
 class SHOOTERSANDBOX_API ABaseConstruct : public APawn
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 
 	ABaseConstruct();
 
-/**************************
-*       VARIABLES         *
-**************************/
+	/**************************
+	*       VARIABLES         *
+	**************************/
 
 protected:
 
-//=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
+	//=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
 
 	int appearanceIndex;
 	bool destroyed = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	int maxHealth;
+		int maxHealth;
 
 	UPROPERTY(Replicated)
-	int health;
+		int health;
 
 	UPROPERTY(Replicated)
-	class AShooterSandboxController* constructedBy;
+		class AShooterSandboxController* constructedBy;
 
-public:	
+public:
 
-//=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
+	//=#=#=#=#= EDITABLE IN BLUEPRINTS =#=#=#=#=
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EConstructComposition constructComposition; 
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Recoil")
-	class USceneComponent* rootComp;
+		class USceneComponent* rootComp;
 
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* baseOrientation;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		USceneComponent* baseOrientation;
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* constructBase;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		UStaticMeshComponent* constructBase;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool isGridAligned;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool canBeParented;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		class UGeometryCollectionComponent* constructBaseGeometry;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString constructName;
+		bool isGridAligned;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int constructionCost;
+		bool canBeParented;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString constructRowName;
+		FString constructName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int constructionCost;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString constructRowName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
-	TArray<class UMaterialInstance*> appearanceOptions;
+		TArray<class UMaterialInstance*> appearanceOptions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
-	TArray<class UMaterialInstance*> destructionMaterials;
+		TArray<class UMaterialInstance*> destructionMaterials;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool shouldForm;
+		bool shouldForm;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destruction")
-	TSubclassOf<class AEConstructDestruction> destructionBP;
+		TSubclassOf<class AEConstructDestruction> destructionBP;
 
-/**************************
-*       FUNCTIONS         *
-**************************/
+	/**************************
+	*       FUNCTIONS         *
+	**************************/
 
 	virtual void BeginPlay() override;
 
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser) override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	void SetConstructedBy(class AShooterSandboxController* owner);
 
@@ -90,16 +97,25 @@ public:
 	virtual void DestroyConstruct(int lowMidHigh);
 
 	UFUNCTION(BlueprintCallable, Category = "Materials")
-	void RefreshAppearance();
+		void ConstructFormation();
 
 	UFUNCTION(BlueprintCallable, Category = "Construct Details")
-	void FetchConstructDetailsFromDatabase();
+		void FetchConstructDetailsFromDatabase();
 
 	UFUNCTION(Category = "Materials")
-	void FormationScaling(FVector current, FVector fullScale, float alpha);
+		void FormationScaling(FVector current, FVector fullScale, float alpha);
 
-//=#=#=#=#= SERVER FUNCTIONS =#=#=#=#=
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Destruction")
+		void BP_SetupDestruction();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Destruction")
+		void BP_BlockifyConstruct();
+
+	UFUNCTION(BlueprintCallable, Category = "Destruction")
+		void DestroyNow();
+
+	//=#=#=#=#= SERVER FUNCTIONS =#=#=#=#=
 
 	UFUNCTION(NetMulticast, Reliable)
-	void Multicast_DestroyConstruct(int lowMidHigh);
+		void Multicast_DestroyConstruct(int lowMidHigh);
 };

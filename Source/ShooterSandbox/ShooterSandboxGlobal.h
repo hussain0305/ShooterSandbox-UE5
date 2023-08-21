@@ -4,7 +4,6 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Engine/DataTable.h"
 #include "Engine/Texture2D.h"
-#include "BaseConstruct.h"
 #include "ShooterSandboxGlobal.generated.h"
 
 UENUM(BlueprintType)
@@ -45,6 +44,14 @@ enum class EHUDCommandType : uint8 {
 	PlayHitAnimation			UMETA(DisplayName = "PlayHitAnimation"),
 	PlayKillAnimation			UMETA(DisplayName = "PlayKillAnimation"),
 	SuccessfulHit				UMETA(DisplayName = "SuccessfulHit")
+};
+
+UENUM(BlueprintType)
+enum class EConstructComposition : uint8 {
+	IndestructibleMesh		UMETA(DisplayName = "Indestructible, Uses Mesh"),
+	DestructibleMesh		UMETA(DisplayName = "Destructible, Uses Mesh"),
+	IndestructibleGeometry	UMETA(DisplayName = "Indestructible, Uses Geometry"),
+	DestructibleGeometry	UMETA(DisplayName = "Destructible, Uses Geometry"),
 };
 
 UENUM(BlueprintType)
@@ -109,5 +116,5 @@ struct FConstructsDatabase : public FTableRowBase
 	int constructionCost;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<ABaseConstruct> constructBP;
+	TSubclassOf<class ABaseConstruct> constructBP;
 };
