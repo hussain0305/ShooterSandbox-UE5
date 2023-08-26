@@ -36,8 +36,8 @@ void ABaseConstruct::BeginPlay()
 
 	health = maxHealth;
 
-	BP_SetupDestruction();
 	ConstructFormation();
+	BP_SetupDestruction();
 	FetchConstructDetailsFromDatabase();
 }
 
@@ -100,6 +100,9 @@ void ABaseConstruct::Multicast_DestroyConstruct_Implementation(int lowMidHigh)
 
 	if (constructComposition == EConstructComposition::DestructibleGeometry)
 	{
+		constructBaseGeometry->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		constructBaseGeometry->SetSimulatePhysics(true);
+		constructBaseGeometry->SetEnableGravity(true);
 		BP_BlockifyConstruct();
 		return;
 	}
@@ -129,6 +132,8 @@ void ABaseConstruct::ConstructFormation()
 {
 	if (constructComposition == EConstructComposition::DestructibleMesh || constructComposition == EConstructComposition::DestructibleGeometry)
 	{
+		constructBaseGeometry->SetSimulatePhysics(false);
+		constructBaseGeometry->SetEnableGravity(false);
 		constructBaseGeometry->SetActive(false);
 		constructBaseGeometry->SetVisibility(false, true);
 	}
@@ -209,10 +214,10 @@ void ABaseConstruct::FormationScaling(FVector current, FVector fullScale, float 
 				constructBaseGeometry->SetActive(true);
 				constructBaseGeometry->SetVisibility(true, true);
 
+				constructBaseGeometry->SetSimulatePhysics(true);
 				constructBaseGeometry->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 				constructBaseGeometry->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 				constructBaseGeometry->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel4);
-				constructBaseGeometry->SetSimulatePhysics(true);
 				GEngine->AddOnScreenDebugMessage(1, 15.0f, FColor::Yellow, TEXT("SWITCHED!!!!!!"));
 
 				TArray<UActorComponent*> mainMesh;
