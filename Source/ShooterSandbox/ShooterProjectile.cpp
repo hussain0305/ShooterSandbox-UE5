@@ -5,7 +5,9 @@
 #include "ShooterSandboxCharacter.h"
 #include "BaseConstruct.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GeometryCollection/GeometryCollectionComponent.h"
 #include "Components/SphereComponent.h"
+#include "Field/FieldSystemActor.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -71,6 +73,15 @@ void AShooterProjectile::OnProjectileHit(UPrimitiveComponent * HitComp, AActor *
 
 	if (Cast<ABaseConstruct>(OtherActor))
 	{
+		UGeometryCollectionComponent* geometryComponent = Cast<ABaseConstruct>(OtherActor)->constructBaseGeometry;
+		if (geometryComponent)
+		{
+			FActorSpawnParameters spawnParams;
+			spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+			AFieldSystemActor* spawnedField = GetWorld()->SpawnActor<AFieldSystemActor>(
+				forceField, Hit.Location, GetActorRotation(), spawnParams);
+		}
 		Cast<ABaseConstruct>(OtherActor)->TakeDamage((float)damage, FDamageEvent(), GetShooterController(), GetInstigator());
 	}
 

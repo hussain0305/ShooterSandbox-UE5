@@ -40,6 +40,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destruction")
+		TSubclassOf<class AFieldSystemActor> forceField;
+
 	void FireInDirection(FVector shootDirection);
 
 	void SetShooterController(class AShooterSandboxController* shooter);
