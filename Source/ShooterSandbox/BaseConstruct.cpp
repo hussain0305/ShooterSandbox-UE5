@@ -9,6 +9,7 @@
 #include "TimerManager.h"
 #include "EConstructDestruction.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -77,7 +78,6 @@ AShooterSandboxController* ABaseConstruct::GetConstructedBy()
 void ABaseConstruct::DestroyConstruct(int lowMidHigh)
 {
 	destroyed = true;
-	//!UPGRADE TODO
 	if (GetLocalRole() < ROLE_Authority)
 	{
 		return;
@@ -87,10 +87,6 @@ void ABaseConstruct::DestroyConstruct(int lowMidHigh)
 	{
 		Multicast_DestroyConstruct(lowMidHigh);
 	}
-
-	//Probably resolved below. Ignore "!UPGRADE TODO"
-	//!UPGRADE TODO
-	//Destroy();
 }
 
 void ABaseConstruct::Multicast_DestroyConstruct_Implementation(int lowMidHigh)
@@ -107,19 +103,6 @@ void ABaseConstruct::Multicast_DestroyConstruct_Implementation(int lowMidHigh)
 		return;
 	}
 
-	//TArray<UStaticMeshComponent*> allStaticMeshes;
-	//Cast<AActor>(this)->GetComponents<UStaticMeshComponent>(allStaticMeshes);
-
-	//FActorSpawnParameters spawnParams;
-	//spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	//AEConstructDestruction* spawnedDestruction = GetWorld()->SpawnActor<AEConstructDestruction>(
-	//	destructionBP, GetActorLocation() + allStaticMeshes[0]->GetRelativeLocation(), GetActorRotation(), spawnParams);
-
-	//if (spawnedDestruction != nullptr)
-	//{
-	//	spawnedDestruction->DestroyConstruct(Cast<UMaterialInstance>(destructionMaterials[appearanceIndex]), lowMidHigh);
-	//}
 	DestroyNow();
 }
 
@@ -154,12 +137,13 @@ void ABaseConstruct::ConstructFormation()
 
 	TArray<UActorComponent*> mainMesh;
 	mainMesh = Cast<AActor>(this)->GetComponentsByClass(UStaticMeshComponent::StaticClass());
+	createdDynamicMaterial = UMaterialInstanceDynamic::Create(appearanceOptions[appearanceIndex], this);
 
 	if (mainMesh.Num() != 0)
 	{
 		if (Cast<UStaticMeshComponent>(mainMesh[0]))
 		{
-			Cast<UStaticMeshComponent>(mainMesh[0])->SetMaterial(0, appearanceOptions[appearanceIndex]);
+			Cast<UStaticMeshComponent>(mainMesh[0])->SetMaterial(0, createdDynamicMaterial);
 		}
 
 		return;
@@ -173,7 +157,7 @@ void ABaseConstruct::ConstructFormation()
 		return;
 	}
 
-	allStaticMeshes[0]->SetMaterial(0, appearanceOptions[appearanceIndex]);
+	allStaticMeshes[0]->SetMaterial(0, createdDynamicMaterial);
 }
 
 void ABaseConstruct::FetchConstructDetailsFromDatabase()
@@ -210,7 +194,6 @@ void ABaseConstruct::FormationScaling(FVector current, FVector fullScale, float 
 				constructBase->SetVisibility(false, true);
 				constructBase->DestroyComponent();
 
-				//constructBaseGeometry->Activate();
 				constructBaseGeometry->SetActive(true);
 				constructBaseGeometry->SetVisibility(true, true);
 
@@ -220,14 +203,16 @@ void ABaseConstruct::FormationScaling(FVector current, FVector fullScale, float 
 				constructBaseGeometry->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel4);
 				GEngine->AddOnScreenDebugMessage(1, 15.0f, FColor::Yellow, TEXT("SWITCHED!!!!!!"));
 
-				TArray<UActorComponent*> mainMesh;
-				mainMesh = Cast<AActor>(this)->GetComponentsByClass(UGeometryCollectionComponent::StaticClass());
+				TArray<UActorComponent*> mainGeometryCollection;
+				mainGeometryCollection = Cast<AActor>(this)->GetComponentsByClass(UGeometryCollectionComponent::StaticClass());
+				createdDynamicMaterial = UMaterialInstanceDynamic::Create(appearanceOptions[appearanceIndex], this);
 
-				if (mainMesh.Num() != 0)
+				if (mainGeometryCollection.Num() != 0)
 				{
-					if (Cast<UGeometryCollectionComponent>(mainMesh[0]))
+					if (Cast<UGeometryCollectionComponent>(mainGeometryCollection[0]))
 					{
-						Cast<UGeometryCollectionComponent>(mainMesh[0])->SetMaterial(0, appearanceOptions[appearanceIndex]);
+						Cast<UGeometryCollectionComponent>(mainGeometryCollection[0])->SetMaterial(0, createdDynamicMaterial);
+						Cast<UGeometryCollectionComponent>(mainGeometryCollection[0])->SetMaterial(1, createdDynamicMaterial);
 					}
 
 					return;
@@ -241,7 +226,8 @@ void ABaseConstruct::FormationScaling(FVector current, FVector fullScale, float 
 					return;
 				}
 
-				allGeometryColelctions[0]->SetMaterial(0, appearanceOptions[appearanceIndex]);
+				allGeometryColelctions[0]->SetMaterial(0, createdDynamicMaterial);
+				allGeometryColelctions[0]->SetMaterial(1, createdDynamicMaterial);
 		}
 		break;
 		}

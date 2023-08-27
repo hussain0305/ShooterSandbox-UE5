@@ -70,6 +70,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString constructRowName;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float fadeOutDuration = 2;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
 		TArray<class UMaterialInstance*> appearanceOptions;
 
@@ -81,6 +84,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destruction")
 		TSubclassOf<class AEConstructDestruction> destructionBP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
+		class UMaterialInstanceDynamic* createdDynamicMaterial;
 
 	/**************************
 	*       FUNCTIONS         *

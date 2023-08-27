@@ -76,11 +76,7 @@ void AShooterProjectile::OnProjectileHit(UPrimitiveComponent * HitComp, AActor *
 		UGeometryCollectionComponent* geometryComponent = Cast<ABaseConstruct>(OtherActor)->constructBaseGeometry;
 		if (geometryComponent)
 		{
-			FActorSpawnParameters spawnParams;
-			spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-			AFieldSystemActor* spawnedField = GetWorld()->SpawnActor<AFieldSystemActor>(
-				forceField, Hit.Location, GetActorRotation(), spawnParams);
+			Multicast_SpawnForceField(Hit.Location);
 		}
 		Cast<ABaseConstruct>(OtherActor)->TakeDamage((float)damage, FDamageEvent(), GetShooterController(), GetInstigator());
 	}
@@ -94,6 +90,15 @@ void AShooterProjectile::OnProjectileHit(UPrimitiveComponent * HitComp, AActor *
 	{
 		DestroyProjectile();
 	}
+}
+
+void AShooterProjectile::Multicast_SpawnForceField_Implementation(FVector forceFieldLocation)
+{
+	FActorSpawnParameters spawnParams;
+	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AFieldSystemActor* spawnedField = GetWorld()->SpawnActor<AFieldSystemActor>(
+		forceField, forceFieldLocation, GetActorRotation(), spawnParams);
 }
 
 void AShooterProjectile::Server_EnableProjectileGravity_Implementation()

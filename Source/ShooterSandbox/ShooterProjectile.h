@@ -26,43 +26,47 @@ public:
 	FTimerHandle countdownLife;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = Projectile)
-	class USphereComponent* CollisionComponent;
+		class USphereComponent* CollisionComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	bool destroyOnImpact;
+		bool destroyOnImpact;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float lifetime;
+		float lifetime;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
-	int damage;
+		int damage;
 
 	UPROPERTY(VisibleAnywhere, Category = Movement)
-	class UProjectileMovementComponent* ProjectileMovementComponent;
+		class UProjectileMovementComponent* ProjectileMovementComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destruction")
 		TSubclassOf<class AFieldSystemActor> forceField;
 
+	UFUNCTION()
+		void OnProjectileHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION(Server, Reliable)
+		void Server_EnableProjectileGravity();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+		void DestroyProjectile();
+
+	UFUNCTION(Server, Reliable)
+		void DestroyProjectileInSeconds(float inSeconds);
+
+	UFUNCTION(Server, Reliable)
+		void InvalidateDeathTimer();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void Multicast_SpawnForceField(FVector forceFieldLocation);
+
+	void Local_DestroyProjectile();
+	
 	void FireInDirection(FVector shootDirection);
 
 	void SetShooterController(class AShooterSandboxController* shooter);
 
 	class AShooterSandboxController* GetShooterController();
 
-	UFUNCTION()
-	void OnProjectileHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	UFUNCTION(Server, Reliable)
-	void Server_EnableProjectileGravity();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-	void DestroyProjectile();
-
-	UFUNCTION(Server, Reliable)
-	void DestroyProjectileInSeconds(float inSeconds);
-
-	UFUNCTION(Server, Reliable)
-	void InvalidateDeathTimer();
-
-	void Local_DestroyProjectile();
 };
