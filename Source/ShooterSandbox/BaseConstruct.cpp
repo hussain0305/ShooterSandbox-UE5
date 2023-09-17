@@ -83,10 +83,7 @@ void ABaseConstruct::DestroyConstruct(int lowMidHigh)
 		return;
 	}
 
-	if (destructionBP)
-	{
-		Multicast_DestroyConstruct(lowMidHigh);
-	}
+	Multicast_DestroyConstruct(lowMidHigh);
 }
 
 void ABaseConstruct::Multicast_DestroyConstruct_Implementation(int lowMidHigh)
