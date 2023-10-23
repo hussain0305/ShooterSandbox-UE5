@@ -88,6 +88,21 @@ enum class EEasingFunction : uint8 {
 	EaseInOutBounce		UMETA(DisplayName = "EaseInOutBounce")
 };
 
+UENUM(BlueprintType)
+enum class EUIElement : uint8 {
+	TopBar							UMETA(DisplayName = "TopBar"),
+	TopBarButton					UMETA(DisplayName = "TopBarButton"),
+	TopBarButtonHighlighted			UMETA(DisplayName = "TopBarButtonHighlighted"),
+	TopBarButtonText				UMETA(DisplayName = "TopBarButtonText"),
+	TopBarButtonTextHighlighted		UMETA(DisplayName = "TopBarButtonTextHighlighted"),
+	MenuButton						UMETA(DisplayName = "MenuButton"),
+	MenuButtonHighlighted			UMETA(DisplayName = "MenuButtonHighlighted"),
+	MenuButtonText					UMETA(DisplayName = "MenuButtonText"),
+	MenuButtonTextHighlighted		UMETA(DisplayName = "MenuButtonTextHighlighted"),
+	PanelBackgroundPrimary			UMETA(DisplayName = "PanelBackgroundPrimary"),
+	PanelBackgroundSecondary		UMETA(DisplayName = "PanelBackgroundSecondary"),
+	PanelBackgroundTertiary			UMETA(DisplayName = "PanelBackgroundTertiary")
+};
 
 USTRUCT(BlueprintType)
 struct FConstructsDatabase : public FTableRowBase
@@ -117,4 +132,16 @@ struct FConstructsDatabase : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class ABaseConstruct> constructBP;
+};
+
+USTRUCT(BlueprintType)
+struct FColorPalette : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TEnumAsByte<EUIElement> uiElement;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FColor Color;
 };
